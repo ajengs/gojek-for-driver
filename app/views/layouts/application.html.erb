@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gojek For Partners</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'%>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %>
+  </head>
+  <body class="fixed skin-blue-light">
+
+    <div class="wrapper">
+      <% if session[:user_id] %>
+        <%= render 'layouts/navigation/layout'%>
+
+        <div class="content-wrapper">
+            <%= yield %>
+        </div>
+
+        <%= render 'layouts/navigation/footer' %>
+      <% else %>
+        <%= yield %>
+      <% end %>
+    </div>
+  </body>
+</html>

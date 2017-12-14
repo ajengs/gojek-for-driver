@@ -1,0 +1,15 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+@import "AdminLTE";
+@import "skins/skin-blue-light";
+
+.content-wrapper {
+  padding: 100px;
+  height: 100%;
+}
+
+.login-box, .register-box {
+    width: 360px;
+    margin: 7% auto;
+}

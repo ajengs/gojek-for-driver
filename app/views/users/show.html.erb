@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+<h1>Profile</h1>
+
+<div class="row">
+  <div class="col-md-8">
+    <h3>
+      <span class="glyphicon glyphicon-driver"></span>
+      <%= "#{@user.first_name} #{@user.last_name}" %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-envelope"></span>
+      <%= @user.email %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-phone"></span>
+      <%= @user.phone %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-credit-card"></span>
+      <%= @user.gopay %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-barcode"></span>
+      <%= @user.license_plate %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-road"></span>
+      <%= @user.type.name %>
+    </h3>
+    <h3>
+      <span class="glyphicon glyphicon-star"></span>
+      <%= @user.rating %>
+    </h3>
+    <h3>
+      <%= link_to 'Edit Profile', edit_user_path(@user) %>
+    </h3>
+  </div>
+</div>
+
