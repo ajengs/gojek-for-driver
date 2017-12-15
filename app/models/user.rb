@@ -14,16 +14,35 @@ class User < ApplicationRecord
   validates :license_plate, uniqueness: { case_sensitive: false }
   validates :gopay, numericality: { greater_than_or_equal_to: 0 }
   
-  GMAPS = GoogleMapsService::Client.new(key: 'AIzaSyDBu0E_x067mvWLpmOSdRsnhYL9euWiczk')
+  geocoded_by :current_location
   
   def set_location(location)
-    location_geocode = GMAPS.geocode(location)
-
-    if !location_geocode.nil? && location_geocode.empty?
-      errors.add(:current_location, "address not found")
-      false
-    else
-      self.update(current_location: location)
-    end
+    return false if location_not_empty(location) || location_unchanged(location)
+    
+    self.current_location = location
+    location_geocode = geocode
+    
+    return false if location_not_found(location_geocode)
+    self.save
+    # self.update(current_location: location, latitude: location_geocode[0], longitude: location_geocode[1])
   end
+
+  private
+    def location_not_empty(location)
+      if !location.present? || location.nil? || location.empty?
+        errors.add(:current_location, "can't be blank")
+      end
+    end
+
+    def location_unchanged(location)
+      if location == self.current_location
+        errors.add(:current_location, "is not changed")
+      end
+    end
+
+    def location_not_found(geolocation)
+      if geolocation.nil?
+        errors.add(:current_location, "address not found")
+      end
+    end
 end
