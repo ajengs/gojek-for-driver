@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171215041424) do
+ActiveRecord::Schema.define(version: 20171216054914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "external_id"
+    t.string "origin"
+    t.string "destination"
+    t.string "origin_coordinates"
+    t.string "destination_coordinates"
+    t.float "price"
+    t.bigint "user_id"
+    t.bigint "type_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["type_id"], name: "index_orders_on_type_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
 
   create_table "types", force: :cascade do |t|
     t.string "name"

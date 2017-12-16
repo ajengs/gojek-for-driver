@@ -12,7 +12,8 @@ class SessionController < ApplicationController
       session[:user_id] = user.id
       redirect_to index_path
     else
-      render :new, alert: 'Invalid user/password combination'
+      flash.now[:alert] = 'Invalid user/password combination'
+      render :new
     end
   end
 

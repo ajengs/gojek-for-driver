@@ -50,10 +50,10 @@ RSpec.describe Type, type: :model do
       expect(@type.users).to match_array([user1, user2])
     end
 
-    # it 'should have many orders' do
-    #   order1 = create(:order, type: @type)
-    #   order2 = create(:order, type: @type)
-    #   expect(@type.orders).to match_array([order1, order2])
-    # end
+    it 'should have many orders' do
+      order1 = create(:order, type: @type)
+      order2 = create(:order, type: @type)
+      expect(@type.orders).to match_array([order1, order2])
+    end
   end
 end

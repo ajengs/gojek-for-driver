@@ -13,10 +13,10 @@ RSpec.describe UsersController, type: :controller do
 
   let(:valid_session) { {user_id: user.id} }
 
-  describe "GET #show" do
+  describe "GET #index" do
     it "returns a success response" do
       user = User.create! valid_attributes
-      get :show, params: {id: user.to_param}, session: valid_session
+      get :index, params: {id: user.to_param}, session: valid_session
       expect(response).to be_success
     end
   end
@@ -46,7 +46,7 @@ RSpec.describe UsersController, type: :controller do
 
       it "redirects to the created user" do
         post :create, params: {user: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(User.last)
+        expect(response).to redirect_to(login_path)
       end
     end
 
@@ -65,22 +65,19 @@ RSpec.describe UsersController, type: :controller do
       }
 
       it "updates the requested user" do
-        user = User.create! valid_attributes
         put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
         user.reload
         expect(user.first_name).to eq('Ajeng')
       end
 
       it "redirects to the user" do
-        user = User.create! valid_attributes
         put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(user)
+        expect(response).to redirect_to(user_path)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        user = User.create! valid_attributes
         put :update, params: {id: user.to_param, user: invalid_attributes}, session: valid_session
         expect(response).to be_success
       end
@@ -108,7 +105,7 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it 'redirect to the user' do
-        expect(response).to redirect_to(user)
+        expect(response).to redirect_to(user_path)
       end
     end
 

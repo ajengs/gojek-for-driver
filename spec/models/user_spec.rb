@@ -128,13 +128,12 @@ describe User do
   end
   
   describe "relations" do
-    # it { should have_many(:orders) }
-  #   it 'should have many orders' do
-  #     user = create(:user)
-  #     order1 = create(:order, user: user)
-  #     order2 = create(:order, user: user)
-  #     expect(user.orders).to match_array([order1, order2])
-  #   end
+    it 'should have many orders' do
+      user = create(:user)
+      order1 = create(:order, user: user)
+      order2 = create(:order, user: user)
+      expect(user.orders).to match_array([order1, order2])
+    end
   end
 
   context 'setting location' do
@@ -144,11 +143,13 @@ describe User do
 
     it 'can set current location with valid address' do
       @user.set_location("Kolla Space Sabang")
+      @user.reload
       expect(@user.current_location).to eq("Kolla Space Sabang")
     end
 
     it 'does not change current location with invalid address' do
       @user.set_location("xsxsd")
+      @user.reload
       expect(@user.current_location).to eq("Grand Indonesia")
     end
   end

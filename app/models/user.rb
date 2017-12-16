@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   
   belongs_to :type
+  has_many :orders
 
   validates :email, :first_name, :last_name, :phone, :license_plate, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: {
@@ -17,18 +18,26 @@ class User < ApplicationRecord
   geocoded_by :current_location
   
   def set_location(location)
-    return false if location_not_empty(location) || location_unchanged(location)
+    return false if location_empty(location) || location_unchanged(location)
     
     self.current_location = location
     location_geocode = geocode
-    
     return false if location_not_found(location_geocode)
     self.save
-    # self.update(current_location: location, latitude: location_geocode[0], longitude: location_geocode[1])
+  end
+
+  def self.find_by_location(boundary)
+    User.where("latitude BETWEEN :southeast_latitude AND :northwest_latitude AND
+      longitude BETWEEN :southeast_longitude AND :northwest_longitude",
+      southeast_latitude: boundary[0],
+      southeast_longitude: boundary[1],
+      northwest_latitude: boundary[2],
+      northwest_longitude: boundary[3]
+    )
   end
 
   private
-    def location_not_empty(location)
+    def location_empty(location)
       if !location.present? || location.nil? || location.empty?
         errors.add(:current_location, "can't be blank")
       end
