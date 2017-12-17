@@ -32,19 +32,20 @@
         <li class="dropdown user user-menu">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             <img alt="User Image" class="user-image" src="http://placehold.it/160x160" />
-          <span class="hidden-xs"><%= "#{@current_user.first_name} #{@current_user.last_name}" %></span>
+          <span class="hidden-xs"><%= "#{@current_user.full_name}" %></span>
           </a>
           <ul class="dropdown-menu">
             <li class="user-header">
               <img class="img-circle" alt="User Image" src="http://placehold.it/160x160"> </img>
               <p>
-                <%= "#{@current_user.first_name} #{@current_user.last_name}" %>
+                <%= "#{@current_user.full_name}" %>
+                <small><%= "Member since #{@current_user.joined_at}" %></small>
               </p>
             </li>
             <li class="user-footer">
               <div class="pull-left">
                 <a class="btn btn-default btn-flat" href="#"> 
-                  <%= link_to 'Profile', @current_user %>
+                  <%= link_to 'Profile', user_path %>
                 </a>
               </div>
               <div class="pull-right">

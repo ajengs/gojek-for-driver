@@ -50,11 +50,11 @@
 
     <div class="form-group">
       <%= f.label :type_id %>
-      <%= f.collection_select :type_id, Type.order(:name), :id, :name, class: "form-control" %>
+      <%= f.collection_select :type_id, Type.order(:name), :id, :name, {}, class: "form-control" %>
     </div>
 
     <div class="actions">
-      <%= f.submit("Register", class: "btn btn-success") %>
+      <%= f.submit("Submit", class: "btn btn-success") %>
     </div>
   </fieldset>
 <% end %>

@@ -78,6 +78,11 @@ describe User do
     expect(user.errors[:phone]).to include('is too long (maximum is 12 characters)')
   end
 
+  it 'saves names in capitalized case' do
+    user = create(:user, first_name: 'ajeng')
+    expect(user.first_name).to eq('Ajeng')
+  end
+  
   context 'on a new user' do
     it 'is invalid without a password' do
       user = build(:user, password: nil, password_confirmation: nil)
@@ -151,6 +156,12 @@ describe User do
       @user.set_location("xsxsd")
       @user.reload
       expect(@user.current_location).to eq("Grand Indonesia")
+    end
+  end
+
+  context 'find by location' do
+    it 'returns users from nearby location with a certain type' do
+      skip
     end
   end
 end

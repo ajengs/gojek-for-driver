@@ -7,7 +7,7 @@
 
       <div class="pull-left info">
         <p>
-          <%= link_to "#{@current_user.first_name} #{@current_user.last_name}", @current_user %>
+          <%= link_to "#{@current_user.full_name}", user_path %>
         </p>
         <p><span class="glyphicon glyphicon-credit-card"></span> <%= @current_user.gopay %></p>
       </div>
@@ -20,7 +20,7 @@
       <li class="active">
         <%= link_to "Set Location", edit_location_path %>
       </li>
-      <li><%= link_to "Order History", '#' %></li>
+      <li><%= link_to "Job History", orders_path %></li>
     </ul>
   </div>
 </div>

@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
+  resources :users, only: [:new, :create]
+  resources :orders, only: [:index, :show]
   controller :users do
     get 'user' => :index
-    get 'register' => :new
-    post 'register' => :create
     get 'user/edit' => :edit
     patch 'user' => :update
     delete 'user' => :destroy
@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
-
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :orders
+    end
+  end
   root 'dashboard#index', as: 'index'
 end

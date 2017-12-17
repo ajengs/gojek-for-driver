@@ -16,6 +16,7 @@ class User < ApplicationRecord
   validates :gopay, numericality: { greater_than_or_equal_to: 0 }
   
   geocoded_by :current_location
+  before_save :capitalize_names
   
   def set_location(location)
     return false if location_empty(location) || location_unchanged(location)
@@ -26,13 +27,14 @@ class User < ApplicationRecord
     self.save
   end
 
-  def self.find_by_location(boundary)
+  def self.find_by_location(boundary, type_id)
     User.where("latitude BETWEEN :southeast_latitude AND :northwest_latitude AND
-      longitude BETWEEN :southeast_longitude AND :northwest_longitude",
+      longitude BETWEEN :southeast_longitude AND :northwest_longitude AND type_id = :type_id",
       southeast_latitude: boundary[0],
       southeast_longitude: boundary[1],
       northwest_latitude: boundary[2],
-      northwest_longitude: boundary[3]
+      northwest_longitude: boundary[3],
+      type_id: type_id
     )
   end
 
@@ -53,5 +55,10 @@ class User < ApplicationRecord
       if geolocation.nil?
         errors.add(:current_location, "address not found")
       end
+    end
+    
+    def capitalize_names
+      first_name.capitalize!
+      last_name.capitalize!
     end
 end

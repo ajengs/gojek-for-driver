@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Job History</h1>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Origin</th>
+      <th>Destination</th>
+      <th>Price</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.origin %></td>
+        <td><%= order.destination %></td>
+        <td><%= order.price %></td>
+        <td><%= link_to 'Show', order_path(order.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

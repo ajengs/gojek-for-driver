@@ -11,7 +11,7 @@ RSpec.describe UsersController, type: :controller do
     attributes_for(:invalid_user)
   }
 
-  let(:valid_session) { {user_id: user.id} }
+  let(:valid_session) { {gopartner_user_id: user.id} }
 
   describe "GET #index" do
     it "returns a success response" do

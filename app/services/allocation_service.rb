@@ -6,7 +6,7 @@ module AllocationService
 
     boundary_box = boundary(order.origin_coordinates.split(" "))
 
-    users = User.find_by_location(boundary_box)
+    users = User.find_by_location(boundary_box, order.type_id)
     driver = nil
     
     unless users.nil?
@@ -51,7 +51,9 @@ module AllocationService
       origin: params["origin"],
       destination: params["destination"],
       origin_coordinates: "#{params["origin_latitude"]} #{params["origin_longitude"]}",
-      destination_coordinates: "#{params["destination_latitude"]} #{params["destination_longitude"]}"
+      destination_coordinates: "#{params["destination_latitude"]} #{params["destination_longitude"]}",
+      type_id: params["type_id"],
+      status: "Initialized"
     )
   end
 end

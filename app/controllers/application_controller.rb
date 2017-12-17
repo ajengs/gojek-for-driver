@@ -5,9 +5,11 @@ class ApplicationController < ActionController::Base
 
   protected
     def authorize
-      @current_user = User.find_by(id: session[:user_id])
+      @current_user = User.find_by(id: session[:gopartner_user_id])
       unless @current_user
         redirect_to login_url, notice: 'Please Login'
+      else
+        @current_user = @current_user.decorate
       end
     end
 end

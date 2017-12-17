@@ -16,12 +16,12 @@ RSpec.describe SessionController, type: :controller do
     context 'with valid phone or email and password' do
       it 'assigns user_id to session variable with login phone' do
         post :create, params: { login: '12345678', password: 'longpassword' }
-        expect(session[:user_id]).to eq(@user.id)
+        expect(session[:gopartner_user_id]).to eq(@user.id)
       end
 
       it 'assigns user_id to session variable with login phone' do
         post :create, params: { login: 'user@aaa.com', password: 'longpassword' }
-        expect(session[:user_id]).to eq(@user.id)
+        expect(session[:gopartner_user_id]).to eq(@user.id)
       end
 
       it 'redirects to index page' do
@@ -41,7 +41,7 @@ RSpec.describe SessionController, type: :controller do
   describe 'DELETE #destroy' do
     it 'removes user_id from session variable' do
       delete :destroy, params: { id: @user }
-      expect(session[:user_id]).to eq(nil)
+      expect(session[:gopartner_user_id]).to eq(nil)
     end
 
     it 'redirects to login page' do
