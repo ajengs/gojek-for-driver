@@ -1,5 +1,5 @@
 <% if flash[:alert] %>
-  <p id='notice'><%= flash[:alert] %></p>
+  <div class="alert alert-warning mid-text"><p id='notice'><%= flash[:alert] %></p></div>
 <% end %>
 
 <div class="login-box">
@@ -10,7 +10,7 @@
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session DRIVER</p>
 
-    <%= form_tag do %>
+    <%= form_tag({}, class:"form-horizontal") do %>
       <div class="form-group has-feedback">
         <%= text_field_tag :login, params[:login], class: 'form-control', placeholder:'phone' %>
         <span class="glyphicon glyphicon-phone form-control-feedback"></span>

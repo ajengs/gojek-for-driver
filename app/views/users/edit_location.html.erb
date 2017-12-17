@@ -15,6 +15,7 @@
 <div>
   <strong>Current Location:</strong>
   <%= @user.current_location %>
+  <%= "http://maps.googleapis.com/maps/api/staticmap?center=#{@user.latitude},#{@user.longitude}&markers=#{@user.latitude},#{@user.longitude}&zoom=15&size=640x400" %>
 </div>
 
   <fieldset>
@@ -34,3 +35,7 @@
 <% end %>
 
 <%= link_to 'Back', @user %>
+<div>
+  <%= image_tag "http://maps.googleapis.com/maps/api/staticmap?center=#{@user.latitude},#{@user.longitude}&markers=#{@user.latitude},#{@user.longitude}&zoom=15&size=640x400",
+      class: 'img-fluid img-rounded', alt: "#{@user.first_name} on the map"%>
+</div>

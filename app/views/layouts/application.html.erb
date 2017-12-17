@@ -7,10 +7,11 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %>
   </head>
-  <body class="fixed skin-blue-light">
+  
+  <% if session[:user_id] %>
+    <body class="fixed skin-blue-light">
 
-    <div class="wrapper">
-      <% if session[:user_id] %>
+      <div class="wrapper">
         <%= render 'layouts/navigation/layout'%>
 
         <div class="content-wrapper">
@@ -18,9 +19,11 @@
         </div>
 
         <%= render 'layouts/navigation/footer' %>
-      <% else %>
-        <%= yield %>
-      <% end %>
-    </div>
-  </body>
+      </div>
+    </body>
+  <% else %>
+    <body class="hold-transition login-page">
+      <%= yield %>
+    </body>
+  <% end %>
 </html>
