@@ -11,7 +11,15 @@ module AllocationService
     
     unless users.nil?
       driver = users.min_by { |u| u.orders.count }
+    end
+
+    unless driver.nil?
+      order.user = driver
       order.save
+      if order.payment_type == 'Go-Pay'
+        puts "'allocate_driver ' #{order.price}"
+        response = GopayService.topup(driver, order.price)
+      end
     end
 
     {
@@ -46,6 +54,7 @@ module AllocationService
   end
 
   def self.initialize_order(params)
+    puts "initialize_order #{params['est_price']}"
     Order.new(
       external_id: params["id"],
       origin: params["origin"],
@@ -53,7 +62,24 @@ module AllocationService
       origin_coordinates: "#{params["origin_latitude"]} #{params["origin_longitude"]}",
       destination_coordinates: "#{params["destination_latitude"]} #{params["destination_longitude"]}",
       type_id: params["type_id"],
-      status: "Initialized"
+      status: "Initialized",
+      payment_type: params["payment_type"],
+      price: params["est_price"]
     )
+  end
+
+  def self.cancel_if_exists(params)
+    order = initialize_order(params)
+    begin
+      allocated_order = Order.find_by(external_id: order.external_id)
+      unless allocated_order.nil?
+        allocated_order.update(status: "Cancelled by System")
+        if order.payment_type == 'Go-Pay'
+          response = GopayService.use(order.user, order.price)
+        end
+      end
+    ensure
+      ActiveRecord::Base.connection_pool.release_connection
+    end
   end
 end

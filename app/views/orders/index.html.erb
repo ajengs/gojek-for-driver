@@ -5,9 +5,11 @@
   <table class="table table-striped">
     <thead>
     <tr>
+      <th>Order Date</th>
       <th>Origin</th>
       <th>Destination</th>
       <th>Price</th>
+      <th>Status</th>
       <th></th>
     </tr>
   </thead>
@@ -15,9 +17,11 @@
   <tbody>
     <% @orders.each do |order| %>
       <tr>
+        <td><%= order.order_date %></td>
         <td><%= order.origin %></td>
         <td><%= order.destination %></td>
-        <td><%= order.price %></td>
+        <td><%= order.idr_price %></td>
+        <td><%= order.status %></td>
         <td><%= link_to 'Show', order_path(order.id) %></td>
       </tr>
     <% end %>

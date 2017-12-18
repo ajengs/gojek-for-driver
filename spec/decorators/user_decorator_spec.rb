@@ -35,5 +35,9 @@ describe UserDecorator do
       expect(decorator.joined_at).to eq(user.created_at.strftime("%B %Y"))
     end
   end
+
+  describe '.idr_gopay' do
+    skip
+  end
 end
 

@@ -12,4 +12,8 @@ class UserDecorator < Draper::Decorator
   def joined_at
     created_at.strftime("%B %Y")
   end
+
+  def idr_gopay
+    h.number_to_currency(gopay, unit: "Rp ", delimiter: ".", separator: ",")
+  end
 end

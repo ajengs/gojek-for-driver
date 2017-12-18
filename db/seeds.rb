@@ -23,40 +23,40 @@ Type.create!(
 )
 
 
-User.create!(
-  [
-    {
-      email: "panggah@koko.com", 
-      first_name: "panggah", 
-      last_name: "baskoro", 
-      password: '12345678', 
-      password_confirmation:'12345678', 
-      phone:'0898', 
-      license_plate:'b7878dd', 
-      type_id: 1,
-      current_location: 'Kolla Space Sabang'
-    },
-    {
-      email: "ajeng@koko.com", 
-      first_name: "ajeng", 
-      last_name: "sugiarti", 
-      password: '12345678', 
-      password_confirmation:'12345678', 
-      phone:'0811', 
-      license_plate:'f7878dd', 
-      type_id: 1,
-      current_location: 'Monas'
-    },
-    {
-      email: "nanda@koko.com", 
-      first_name: "nanda", 
-      last_name: "ramdhani", 
-      password: '12345678', 
-      password_confirmation:'12345678', 
-      phone:'0878', 
-      license_plate:'f7878ss', 
-      type_id: 1,
-      current_location: 'Stasiun Gondangdia'
-    }
-  ]
-)
+# User.create!(
+#   [
+#     {
+#       email: "panggah@koko.com", 
+#       first_name: "panggah", 
+#       last_name: "baskoro", 
+#       password: '12345678', 
+#       password_confirmation:'12345678', 
+#       phone:'0898', 
+#       license_plate:'b7878dd', 
+#       type_id: 1,
+#       current_location: 'Kolla Space Sabang'
+#     },
+#     {
+#       email: "ajeng@koko.com", 
+#       first_name: "ajeng", 
+#       last_name: "sugiarti", 
+#       password: '12345678', 
+#       password_confirmation:'12345678', 
+#       phone:'0811', 
+#       license_plate:'f7878dd', 
+#       type_id: 1,
+#       current_location: 'Monas'
+#     },
+#     {
+#       email: "nanda@koko.com", 
+#       first_name: "nanda", 
+#       last_name: "ramdhani", 
+#       password: '12345678', 
+#       password_confirmation:'12345678', 
+#       phone:'0878', 
+#       license_plate:'f7878ss', 
+#       type_id: 1,
+#       current_location: 'Stasiun Gondangdia'
+#     }
+#   ]
+# )
