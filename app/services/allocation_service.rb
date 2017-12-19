@@ -18,7 +18,7 @@ module AllocationService
       order.save
       if order.payment_type == 'Go-Pay'
         puts "'allocate_driver ' #{order.price}"
-        response = GopayService.topup(driver, order.price)
+        response = ::GopayService.topup(driver, order.price)
       end
     end
 
@@ -75,7 +75,7 @@ module AllocationService
       unless allocated_order.nil?
         allocated_order.update(status: "Cancelled by System")
         if order.payment_type == 'Go-Pay'
-          response = GopayService.use(order.user, order.price)
+          response = ::GopayService.use(order.user, order.price)
         end
       end
     ensure

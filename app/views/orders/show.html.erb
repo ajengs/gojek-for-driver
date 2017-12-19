@@ -6,19 +6,25 @@
     <table class="table">
       <tr>
         <th>Job Date</th>
-        <td><%= @order.created_at %></td>
+        <td><%= @order.order_date %></td>
+        <th>Payment Type</th>
+        <td><%= @order.payment_type %></td>
       </tr>
       <tr>
         <th>Origin</th>
         <td><%= @order.origin %></td>
+        <th>Status</th>
+        <td><%= @order.status %></td>
       </tr>
       <tr>
         <th>Destination</th>
         <td><%= @order.destination %></td>
+        <th>Type</th>
+        <td><%= @order.type.name %></td>
       </tr>
       <tr>
         <th>Price</th>
-        <td><%= @order.price %></td>
+        <td><%= @order.idr_price %></td>
       </tr>
     </table>
     <%= link_to 'Back', orders_path, class: "btn btn-success" %>

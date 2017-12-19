@@ -1,4 +1,3 @@
-require 'allocation_service'
 module MessagingService
   def self.consume_and_alocate_order
     topic = "#{RdKafka::TOPIC_PREFIX}orders"
@@ -23,7 +22,7 @@ module MessagingService
     topic = "#{RdKafka::TOPIC_PREFIX}allocated-drivers"
     producer = RdKafka.producer({ "group.id": "drivers-producer" })
 
-    allocation = AllocationService.allocate_driver(order)
+    allocation = ::AllocationService.allocate_driver(order)
 
     unless allocation[:driver].nil?
       allocation.merge!({ status:'OK' })
@@ -52,7 +51,7 @@ module MessagingService
         puts "Message received: #{message}"
         order = JSON.parse(message.payload)
 
-        AllocationService.cancel_if_exists(order)
+        ::AllocationService.cancel_if_exists(order)
       end
     rescue Rdkafka::RdkafkaError => e
       retry if e.is_partition_eof?

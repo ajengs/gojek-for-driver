@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :orders
+      controller :users do
+        post 'check_user' => :check_if_exists
+      end
     end
   end
   root 'dashboard#index', as: 'index'

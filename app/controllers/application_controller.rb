@@ -12,4 +12,10 @@ class ApplicationController < ActionController::Base
         @current_user = @current_user.decorate
       end
     end
+
+    def non_session_only
+      if session[:gopartner_user_id]
+        redirect_to index_path, notice: 'Please logout first'
+      end
+    end
 end

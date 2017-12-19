@@ -29,6 +29,7 @@ module GojekForDriver
     config.generators.system_tests = nil
     config.autoload_paths << Rails.root.join('lib')
 
+    config.autoload_paths << Rails.root.join('app/services')
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')
       YAML.load(File.open(env_file)).each do |key, value|

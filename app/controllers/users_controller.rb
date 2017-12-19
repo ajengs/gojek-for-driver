@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :non_session_only, only: [:new, :create]
   skip_before_action :authorize, only: [:new, :create]
   before_action :set_user, except: [:new, :create]
 
