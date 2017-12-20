@@ -3,62 +3,34 @@ class GopayService
   # rest Rest::Client.new()
 
   def self.register_gopay(user)
-    # opts =  {
-    #   body: {
-    #     id: params[:id],
-    #     type: params[:type],
-    #     passphrase: params[:passphrase]
-    #   }
-    # }
-    puts "posting #{user.first_name}"
-    opts = {
-      body: {
-        id: user.id,
-        type: 'driver',
-        passphrase: user.password_digest
-      }
-    }
+    opts = set_params(user)
     response = HTTParty.post(BASE_URI, opts)
     puts response.body
-    RequestResponse.json_to_hash(response)
+    RequestResponse.json_to_hash(response.body)
   end
 
-  def self.topup(user, amount)
-    puts "patch top up"
-    opts = {
-      body: {
-        id: user.id,
-        type: 'driver',
-        passphrase: user.password_digest,
-        amount: amount
-      }
-    }
+  def self.add(user, amount)
+    opts = set_params(user, amount)
     response = HTTParty.put("#{BASE_URI}topup", opts)
     puts response.body
-    res = RequestResponse.json_to_hash(response)
-    if res[:Status] == 'OK'
-      user.update(gopay: res[:Account]["Amount"])
-    end
-    res
+    RequestResponse.json_to_hash(response.body)
   end
 
-  def self.use(user, amount)
-    puts "patch use gopay"
-    opts = {
-      body: {
-        id: user.id,
-        type: 'driver',
-        passphrase: user.password_digest,
-        amount: amount
-      }
-    }
+  def self.substract(user, amount)
+    opts = set_params(user, amount)
     response = HTTParty.put(BASE_URI, opts)
     puts response.body
-    res = RequestResponse.json_to_hash(response)
-    if res[:Status] == 'OK'
-      user.update(gopay: res[:Account]["Amount"])
-    end
-    res
+    RequestResponse.json_to_hash(response.body)
   end
 
+  def self.set_params(*params)
+    {
+      body: {
+        id: params[0].id,
+        type: 'driver',
+        passphrase: params[0].password_digest,
+        amount: params[1]
+      }
+    }
+  end
 end

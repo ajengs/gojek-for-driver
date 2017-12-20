@@ -8,4 +8,8 @@ class OrderDecorator < Draper::Decorator
   def order_date
     created_at.strftime("%d %B %Y %H:%M:%S")
   end
+
+  def self.collection_decorator_class
+    PaginatingDecorator
+  end
 end

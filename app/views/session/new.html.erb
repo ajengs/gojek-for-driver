@@ -1,6 +1,9 @@
 <% if flash[:alert] %>
   <div class="alert alert-warning mid-text"><p id='notice'><%= flash[:alert] %></p></div>
 <% end %>
+<% if notice %>
+  <div class="alert alert-info mid-text"><p id='notice'><%= notice %></p></div>
+<% end %>
 
 <div class="login-box">
   <div class="login-logo">

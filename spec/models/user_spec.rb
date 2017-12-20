@@ -54,8 +54,8 @@ describe User do
   end
 
   it 'is invalid with a duplicate license' do
-    user1 = create(:user, license_plate: '1234567890')
-    user = build(:user, license_plate: '1234567890')
+    user1 = create(:user, license_plate: 'B9090PP')
+    user = build(:user, license_plate: 'b9090pp')
     user.valid?
     expect(user.errors[:license_plate]).to include("has already been taken")
   end
@@ -81,6 +81,11 @@ describe User do
   it 'saves names in capitalized case' do
     user = create(:user, first_name: 'ajeng')
     expect(user.first_name).to eq('Ajeng')
+  end
+  
+  it 'saves license_plate in all-caps case' do
+    user = create(:user, license_plate: 'b7878oo')
+    expect(user.license_plate).to eq('B7878OO')
   end
   
   context 'on a new user' do
@@ -157,11 +162,23 @@ describe User do
       @user.reload
       expect(@user.current_location).to eq("Grand Indonesia")
     end
+
+    it 'should save latitude and longitude current location' do
+      @user.set_location("Kolla Space Sabang")
+      @user.reload
+      expect(@user.latitude.class).to eq(Float)
+    end
   end
 
   context 'find by location' do
     it 'returns users from nearby location with a certain type' do
-      skip
+      type = create(:type, name: 'Go-Bike')
+      user1 = create(:user,type: type)
+      user2 = create(:user,type: type)
+      user1.set_location("Kolla Space Sabang")
+      user2.set_location("Greenbay Pluit")
+      boundary = Geocoder::Calculations.bounding_box([-6.186740899999999, 106.823555], 1)
+      expect(User.find_by_location(boundary, 'Go-Bike')).to include(user1)
     end
   end
 end

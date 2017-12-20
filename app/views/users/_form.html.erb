@@ -50,7 +50,7 @@
 
     <div class="form-group">
       <%= f.label :type_id %>
-      <%= f.collection_select :type_id, Type.order(:name), :id, :name, {}, class: "form-control" %>
+      <%= f.collection_select :type_id, Type.order(:id), :id, :name, {}, class: "form-control" %>
     </div>
 
     <div class="actions">

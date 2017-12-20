@@ -14,25 +14,69 @@ RSpec.describe UsersController, type: :controller do
   let(:valid_session) { {gopartner_user_id: user.id} }
 
   describe "GET #index" do
-    it "returns a success response" do
-      user = User.create! valid_attributes
-      get :index, params: {id: user.to_param}, session: valid_session
-      expect(response).to be_success
+    context 'with valid session' do
+      before { get :index, params: {}, session: valid_session}
+
+      it "returns a success response" do
+        expect(response).to be_success
+      end
+
+      it 'populates an @user with current user' do
+        expect(assigns(:user)).to eq(user)
+      end
+
+      it 'renders the :index template' do
+        expect(response).to render_template(:index)
+      end
+    end
+
+    it 'redirects to login page if session is invalid' do
+      get :index
+      expect(response).to redirect_to(login_path)
     end
   end
 
   describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
+    before { get :new }
+
+    it "returns a success response without session" do
       expect(response).to be_success
+    end
+
+    it 'assigns a new User to @user' do
+      expect(assigns(:user)).to be_a_new(User)
+    end
+
+    it 'renders the :new template' do
+      expect(response).to render_template(:new)
+    end
+
+    it 'redirects to dashboard page if session is valid' do
+      get :new, params: {}, session: valid_session
+      expect(response).to redirect_to(index_path)
     end
   end
 
   describe "GET #edit" do
-    it "returns a success response" do
-      user = User.create! valid_attributes
-      get :edit, params: {id: user.to_param}, session: valid_session
-      expect(response).to be_success
+    context 'with valid session' do
+      before { get :edit, params: {id: user.to_param}, session: valid_session }
+
+      it "returns a success response" do
+        expect(response).to be_success
+      end
+
+      it 'populates an @user with current user' do
+        expect(assigns(:user)).to eq(user)
+      end
+
+      it 'renders the :edit template' do
+        expect(response).to render_template(:edit)
+      end
+    end
+
+    it 'redirects to login page if session is invalid' do
+      get :edit, params: {id: user.to_param}
+      expect(response).to redirect_to(login_path)
     end
   end
 
@@ -40,21 +84,37 @@ RSpec.describe UsersController, type: :controller do
     context "with valid params" do
       it "creates a new User" do
         expect {
-          post :create, params: {user: valid_attributes}, session: valid_session
+          post :create, params: {user: valid_attributes}
         }.to change(User, :count).by(1)
       end
 
-      it "redirects to the created user" do
-        post :create, params: {user: valid_attributes}, session: valid_session
+      it "redirects to the login path" do
+        post :create, params: {user: valid_attributes}
         expect(response).to redirect_to(login_path)
       end
     end
 
     context "with invalid params" do
+      it 'does not save the new user in the database' do
+        expect{
+          post :create, params: {user: invalid_attributes}
+        }.not_to change(User, :count)
+      end
+
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {user: invalid_attributes}, session: valid_session
+        post :create, params: {user: invalid_attributes}
         expect(response).to be_success
       end
+
+      it 're-renders the :new template' do
+        post :create, params: {user: invalid_attributes}
+        expect(response).to render_template(:new)
+      end
+    end
+
+    it 'redirects to dashboard page if session is valid' do
+      post :create, params: {user: valid_attributes}, session: valid_session
+      expect(response).to redirect_to(index_path)
     end
   end
 
@@ -71,16 +131,26 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it "redirects to the user" do
-        put :update, params: {id: user.to_param, user: valid_attributes}, session: valid_session
+        put :update, params: {id: user.to_param, user: new_attributes}, session: valid_session
         expect(response).to redirect_to(user_path)
       end
     end
 
     context "with invalid params" do
+      before { put :update, params: {id: user.to_param, user: invalid_attributes}, session: valid_session }
+
       it "returns a success response (i.e. to display the 'edit' template)" do
-        put :update, params: {id: user.to_param, user: invalid_attributes}, session: valid_session
         expect(response).to be_success
       end
+
+      it 'renders the :edit template' do
+        expect(response).to render_template(:edit)
+      end
+    end
+
+    it 'redirects to login page if session is invalid' do
+      put :update, params: {id: user.to_param, user: valid_attributes}
+      expect(response).to redirect_to(login_path)
     end
   end
 

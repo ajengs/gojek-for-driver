@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
+
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :orders

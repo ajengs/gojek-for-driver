@@ -8,27 +8,19 @@ module MessagingService
     begin
       consumer.each do |message|
         puts "Message received: #{message}"
-        order = JSON.parse(message.payload)
+        order = RequestResponse.json_to_hash(message.payload)
 
-        self.produce_allocated(order)
+        ::AllocationService.allocate_driver(order)
       end
     rescue Rdkafka::RdkafkaError => e
       retry if e.is_partition_eof?
-      raise
+      # raise
     end
   end
 
-  def self.produce_allocated(order)
+  def self.produce_allocated(allocation)
     topic = "#{RdKafka::TOPIC_PREFIX}allocated-drivers"
     producer = RdKafka.producer({ "group.id": "drivers-producer" })
-
-    allocation = ::AllocationService.allocate_driver(order)
-
-    unless allocation[:driver].nil?
-      allocation.merge!({ status:'OK' })
-    else
-      allocation.merge!({ status:'NOT_FOUND' })
-    end
 
     message = allocation.to_json
 
@@ -49,13 +41,13 @@ module MessagingService
     begin
       consumer.each do |message|
         puts "Message received: #{message}"
-        order = JSON.parse(message.payload)
+        order = RequestResponse.json_to_hash(message.payload)
 
         ::AllocationService.cancel_if_exists(order)
       end
     rescue Rdkafka::RdkafkaError => e
       retry if e.is_partition_eof?
-      raise
+      # raise
     end
   end
 end

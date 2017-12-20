@@ -77,4 +77,11 @@ RSpec.configure do |config|
   end
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  
+  config.around(:all, skip_callbacks: false) do |example|
+    ActiveRecord::Base.skip_callbacks = false
+    example.run
+    ActiveRecord::Base.skip_callbacks = true
+  end
 end
+ActiveRecord::Base.skip_callbacks = true

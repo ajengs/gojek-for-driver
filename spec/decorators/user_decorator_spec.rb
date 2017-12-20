@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe UserDecorator do
-
+RSpec.describe UserDecorator, :type => [:decorator, :helper] do
   let(:first_name)  { 'John'  }
   let(:last_name)  { 'Smith' }
 
   let(:user) { create(:user, 
                      first_name: first_name, 
-                     last_name: last_name) }
+                     last_name: last_name,
+                     gopay: 10000) }
 
   let(:decorator) { user.decorate }
 
@@ -37,7 +37,9 @@ describe UserDecorator do
   end
 
   describe '.idr_gopay' do
-    skip
+    it 'should return gopay in rupiah currency format' do
+      expect(decorator.idr_gopay).to eq("Rp 10.000,00")
+    end
   end
 end
 

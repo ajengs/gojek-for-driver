@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Geocoder
+  include ErrorHandler
   before_action :authorize
   protect_from_forgery with: :null_session
 
