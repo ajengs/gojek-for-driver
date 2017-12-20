@@ -15,19 +15,25 @@ module AllocationService
 
     unless driver.nil?
       order.user = driver
+      order.type = driver.type
+      order.status = "Assigned"
       order.save
-      if order.payment_type == 'Go-Pay'
-        puts "'allocate_driver ' #{order.price}"
-        response = ::GopayService.topup(driver, order.price)
-      end
+      driver.set_location(order.destination)
     end
 
-    {
-      order_id: order.external_id,
-      driver: driver
-    }
+    allocation = {order_id: order.external_id, driver: driver}
+    send_allocation(allocation)
 
     #TODO push notification
+  end
+
+  def self.send_allocation(allocation)
+    unless allocation[:driver].nil?
+      allocation.merge!({ status:'OK' })
+    else
+      allocation.merge!({ status:'NOT_FOUND' })
+    end
+    ::MessagingService.produce_allocated(allocation)
   end
 
   def self.boundary(center)
@@ -56,30 +62,43 @@ module AllocationService
   def self.initialize_order(params)
     puts "initialize_order #{params['est_price']}"
     Order.new(
-      external_id: params["id"],
-      origin: params["origin"],
-      destination: params["destination"],
-      origin_coordinates: "#{params["origin_latitude"]} #{params["origin_longitude"]}",
-      destination_coordinates: "#{params["destination_latitude"]} #{params["destination_longitude"]}",
-      type_id: params["type_id"],
+      external_id: params[:id],
+      origin: params[:origin],
+      destination: params[:destination],
+      origin_coordinates: params[:origin_coordinates],
+      destination_coordinates: params[:destination_coordinates],
       status: "Initialized",
-      payment_type: params["payment_type"],
-      price: params["est_price"]
+      payment_type: params[:payment_type],
+      price: params[:est_price]
     )
   end
 
   def self.cancel_if_exists(params)
-    order = initialize_order(params)
     begin
-      allocated_order = Order.find_by(external_id: order.external_id)
+      allocated_order = Order.find_by(external_id: params[:id])
       unless allocated_order.nil?
         allocated_order.update(status: "Cancelled by System")
-        if order.payment_type == 'Go-Pay'
-          response = ::GopayService.use(order.user, order.price)
-        end
+        allocated_order.user.set_location(order.origin)
       end
     ensure
       ActiveRecord::Base.connection_pool.release_connection
     end
+  end
+
+  BASE_URI = 'http://localhost:3000/api/v1/'
+
+  def self.send_allocation_request(allocation)
+    unless allocation[:driver].nil?
+      allocation.merge!({ status:'OK' })
+    else
+      allocation.merge!({ status:'NOT_FOUND' })
+    end
+    opts = {
+      body: {
+        params: allocation
+      }
+    }
+    response = HTTParty.post("#{BASE_URI}allocate", opts)
+    RequestResponse.json_to_hash(response.body)
   end
 end

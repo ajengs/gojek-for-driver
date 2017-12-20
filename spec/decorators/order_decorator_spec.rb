@@ -19,7 +19,7 @@ RSpec.describe OrderDecorator, :type => [:decorator, :helper] do
 
   describe '.order_date' do
     it 'should return created date month name and year' do
-      expect(decorator.order_date).to eq(order.created_at.strftime("%d %B %Y"))
+      expect(decorator.order_date).to eq(order.created_at.strftime("%d %B %Y %H:%M:%S"))
     end
   end
 

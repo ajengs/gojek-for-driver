@@ -14,9 +14,12 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 8 }, allow_blank: true
   validates :license_plate, uniqueness: { case_sensitive: false }
   validates :gopay, numericality: { greater_than_or_equal_to: 0 }
+  validate :check_in_other_service, unless: :skip_callbacks
   
   geocoded_by :current_location
-  before_save :capitalize_names
+  before_save :capitalize_names, :upcase_attributes
+
+  after_create :register_gopay, unless: :skip_callbacks
   
   def set_location(location)
     return false if location_empty(location) || location_unchanged(location)
@@ -27,14 +30,13 @@ class User < ApplicationRecord
     self.save
   end
 
-  def self.find_by_location(boundary, type_id)
-    User.where("latitude BETWEEN :southeast_latitude AND :northwest_latitude AND
-      longitude BETWEEN :southeast_longitude AND :northwest_longitude AND type_id = :type_id",
+  def self.find_by_location(boundary, type)
+    User.includes(:type).where("users.latitude BETWEEN :southeast_latitude AND :northwest_latitude AND
+      users.longitude BETWEEN :southeast_longitude AND :northwest_longitude",
       southeast_latitude: boundary[0],
       southeast_longitude: boundary[1],
       northwest_latitude: boundary[2],
-      northwest_longitude: boundary[3],
-      type_id: type_id
+      northwest_longitude: boundary[3], types: {name: type}
     )
   end
 
@@ -60,5 +62,20 @@ class User < ApplicationRecord
     def capitalize_names
       first_name.capitalize!
       last_name.capitalize!
+    end
+
+    def upcase_attributes
+      license_plate.upcase!
+    end
+
+    def check_in_other_service
+      response = CustomerApi.send_check_request(self)
+      if response[:user_exists]
+        errors.add(:base, "This user has been registered to other service")
+      end
+    end
+
+    def register_gopay
+      GopayService.register_gopay(self)
     end
 end

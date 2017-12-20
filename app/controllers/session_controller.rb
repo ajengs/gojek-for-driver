@@ -5,8 +5,7 @@ class SessionController < ApplicationController
   end
 
   def create
-    user = User.find_by("email = :login or phone = :login", 
-      login: params[:login])
+    user = User.find_by("email = :login or phone = :login", login: params[:login])
 
     if user.try(:authenticate, params[:password])
       session[:gopartner_user_id] = user.id

@@ -12,12 +12,10 @@ Type.delete_all
 Type.create!(
   [
     {
-      name: "Go-Ride",
-      base_fare: 1500
+      name: "Go-Ride"
     },
     {
-      name: "Go-Car",
-      base_fare: 2500
+      name: "Go-Car"
     }
   ]
 )
