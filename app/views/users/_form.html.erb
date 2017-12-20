@@ -55,6 +55,7 @@
 
     <div class="actions">
       <%= f.submit("Submit", class: "btn btn-success") %>
+      <%= link_to 'Cancel', session[:gopartner_user_id] ? user_path : login_path, class: "btn btn-default" %>
     </div>
   </fieldset>
 <% end %>

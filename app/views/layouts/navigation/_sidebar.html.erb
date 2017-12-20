@@ -9,13 +9,15 @@
         <p>
           <%= link_to "#{@current_user.full_name}", user_path %>
         </p>
-        <p><span class="glyphicon glyphicon-credit-card"></span> <%= @current_user.idr_gopay %></p>
+        <p><span class="glyphicon glyphicon-credit-card"></span> <%= @current_user.idr_gopay %></p>        
       </div>
     </div>
 
     <ul class="sidebar-menu">
       <li class="header">
-        HEADER
+        <p><span class="glyphicon glyphicon-pushpin"></span> 
+          <%= !@current_user.current_location.nil? ? @current_user.current_location : "Set your location!" %>
+        </p>
       </li>
       <li class="active">
         <%= link_to "Set Location", edit_location_path %>

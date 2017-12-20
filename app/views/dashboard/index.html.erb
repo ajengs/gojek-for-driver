@@ -1,2 +1,31 @@
-<p id="notice"><%= notice %></p>
-Dashboard#index
+<% if notice %>
+  <div class="alert alert-info mid-text"><p id='notice'><%= notice %></p></div>
+<% end %>
+<div class="container-fluid text-center">
+  <h2>SERVICES</h2>
+  <br>
+  <div class="row">
+    <%= link_to(user_path) do %>
+      <div class="col-sm-4">
+        <span class="glyphicon glyphicon-user logo-small"></span>
+        <h4>PROFILE</h4>
+        <p>View and edit your profile</p>
+      </div>
+      <% end %>
+    <%= link_to(edit_location_path) do %>
+      <div class="col-sm-4">
+        <span class="glyphicon glyphicon-pushpin logo-small"></span>
+        <h4>LOCATION</h4>
+        <p>Set location and Go Online</p>
+      </div>
+    <% end %>
+    <%= link_to(orders_path) do %>
+      <div class="col-sm-4">
+        <span class="glyphicon glyphicon-lock logo-small"></span>
+        <h4>JOB DONE</h4>
+        <p>View your job history</p>
+      </div>
+    <% end %>
+  </div>
+  <br><br>
+</div>

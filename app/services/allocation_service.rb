@@ -16,6 +16,7 @@ module AllocationService
     unless driver.nil?
       order.user = driver
       order.type = driver.type
+      order.status = "Assigned"
       order.save
       driver.set_location(order.destination)
     end
