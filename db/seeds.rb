@@ -6,55 +6,51 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.delete_all
-Type.delete_all
+# User.delete_all
+# Type.delete_all
 
-Type.create!(
-  [
-    {
-      name: "Go-Ride"
-    },
-    {
-      name: "Go-Car"
-    }
-  ]
-)
-
-
-# User.create!(
+# Type.create!(
 #   [
 #     {
-#       email: "panggah@koko.com", 
-#       first_name: "panggah", 
-#       last_name: "baskoro", 
-#       password: '12345678', 
-#       password_confirmation:'12345678', 
-#       phone:'0898', 
-#       license_plate:'b7878dd', 
-#       type_id: 1,
-#       current_location: 'Kolla Space Sabang'
+#       name: "Go-Ride"
 #     },
 #     {
-#       email: "ajeng@koko.com", 
-#       first_name: "ajeng", 
-#       last_name: "sugiarti", 
-#       password: '12345678', 
-#       password_confirmation:'12345678', 
-#       phone:'0811', 
-#       license_plate:'f7878dd', 
-#       type_id: 1,
-#       current_location: 'Monas'
-#     },
-#     {
-#       email: "nanda@koko.com", 
-#       first_name: "nanda", 
-#       last_name: "ramdhani", 
-#       password: '12345678', 
-#       password_confirmation:'12345678', 
-#       phone:'0878', 
-#       license_plate:'f7878ss', 
-#       type_id: 1,
-#       current_location: 'Stasiun Gondangdia'
+#       name: "Go-Car"
 #     }
 #   ]
 # )
+
+User.create!(
+  [
+    {
+      email: "malfoy@driver.com", 
+      first_name: "Draco", 
+      last_name: "Malfoy", 
+      password: '12345678', 
+      password_confirmation:'12345678', 
+      phone:'08786768665', 
+      license_plate:'B7878DD', 
+      type_id: 1
+    },
+    {
+      email: "crabbe@driver.com", 
+      first_name: "Vincent", 
+      last_name: "Crabbe", 
+      password: '12345678', 
+      password_confirmation:'12345678', 
+      phone:'08676865655', 
+      license_plate:'F7878DD',
+      type_id: 1
+    },
+    {
+      email: "goyle@driver.com", 
+      first_name: "Gregory", 
+      last_name: "Goyle", 
+      password: '12345678', 
+      password_confirmation:'12345678', 
+      phone:'08967757567', 
+      license_plate:'B7848SS', 
+      type_id: 2
+    }
+  ]
+)

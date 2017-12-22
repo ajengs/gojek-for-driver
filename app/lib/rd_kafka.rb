@@ -1,13 +1,13 @@
 class RdKafka
   CONFIG = {
-    :"bootstrap.servers" => 'velomobile-01.srvs.cloudkafka.com:9094,velomobile-02.srvs.cloudkafka.com:9094,velomobile-03.srvs.cloudkafka.com:9094',
-    :"sasl.username"     => 'xz6befqu',
-    :"sasl.password"     => 'ZnTqLiR0WxwLHX_jdiGChcbi4W-H9Mzd',
+    :"bootstrap.servers" => ENV['KAFKA_BOOTSTRAP_SERVERS'],
+    :"sasl.username"     => ENV['KAFKA_SASL_USERNAME'],
+    :"sasl.password"     => ENV['KAFKA_SASL_PASSWORD'],
     :"security.protocol" => "SASL_SSL",
     :"sasl.mechanisms"   => "SCRAM-SHA-256"
   }
 
-  TOPIC_PREFIX = "xz6befqu-"
+  TOPIC_PREFIX = ENV['KAFKA_TOPIC_PREFIX']
 
   def self.consumer(params)
     config = CONFIG.merge(params)
